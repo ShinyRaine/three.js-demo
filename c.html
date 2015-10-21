@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+#canvasdiv{
+	width: 600px;
+	height: 600px;
+}
+
+	</style>
+    <script src="js/three.min.js"></script>
+
+</head>
+<body>
+
+
+	<div class="main-content" id="canvasdiv">
+		
+	</div>
+
+
+<script type="text/javascript" >
+var container,camera,scene,renderer,myobj;
+
+var init = function () {
+	container = document.getElementById('canvasdiv')
+	scene = new THREE.Scene();
+	var width = canvasdiv.clientWidth;
+	var height = canvasdiv.clientHeight;
+	camera = new THREE.PerspectiveCamera( 90, width/height, 0.1, 1000 );
+	camera.position.set( 0,0,10 )
+	renderer = new THREE.WebGLRenderer();
+	renderer.setSize( width, height );
+	canvasdiv.appendChild( renderer.domElement );
+
+	var geometry = new THREE.BoxGeometry( 2,1,1 );
+	var material = new THREE.MeshBasicMaterial( { color: 0x645d50 } );
+	var cube = new THREE.Mesh( geometry, material );
+	//scene.add( cube );
+
+	var geometry = new THREE.SphereGeometry( 0.5,100,100 );
+	var material = new THREE.MeshBasicMaterial( { color: 0xb9c16c } );
+	var ball = new THREE.Mesh( geometry,material );
+	ball.position.set( 0,0,1 );
+	//scene.add(ball);
+
+	myobj = new THREE.Object3D();
+	myobj.add( cube );
+	myobj.add( ball );
+	scene.add( myobj );	
+}
+
+var control={
+	s:0,
+	p:0,
+	q:0,
+	j:0,
+}
+
+var run = function () {
+
+	if ( myobj.position.x<control.p ) {
+		myobj.position.x += control.s;			
+		requestAnimationFrame( run );
+	};
+		renderer.render( scene,camera )
+}
+var runx = function () {
+
+	if ( myobj.position.x>control.p ) {
+	myobj.position.x -= control.s;			
+		requestAnimationFrame( runx );
+	};
+		renderer.render( scene,camera )	
+}
+
+var render = function () {
+	requestAnimationFrame( run );
+	requestAnimationFrame( runx );
+	renderer.render(scene,camera);
+}
+
+
+init()
+render()
+</script>
+</body>
+</html>
